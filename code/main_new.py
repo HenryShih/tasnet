@@ -55,9 +55,7 @@ class Wavedata(Dataset):
 print('Data loading....')
 # train_folder = '../../../../../RTK_separation\移至linux\dataset/'
 train_folder = '../../datasets/DSD100_16k_100percent/'
-data_1 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_1.mat')
-print(type(data_1))
-exit()
+data_1 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_1.mat') #of class 'dict'
 data_2 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_2.mat')
 data_3 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_3.mat')
 data_4 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_4.mat')
@@ -70,8 +68,8 @@ data_10 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomM
 data_11 = sio.loadmat(train_folder+'DSD100_16k_100percentVocal_pairedMix_randomMix_11.mat')
 
 
-x_1_train=data_1['x'][:,:].transpose((1,0)) # [5072, 16000]
-y_1_train=data_1['y'][:,:,:].transpose((2,1,0)) # [5072, 2, 16000]
+x_1_train=data_1['x'][:,:].transpose((1,0)) # [16000, 5072] -> [5072, 16000]
+y_1_train=data_1['y'][:,:,:].transpose((2,1,0)) # [16000, 2, 5072] -> [5072, 2, 16000]
 x_2_train=data_2['x'][:,:].transpose((1,0))
 y_2_train=data_2['y'][:,:,:].transpose((2,1,0))
 x_3_train=data_3['x'][:,:].transpose((1,0))
@@ -105,9 +103,9 @@ test_data = Wavedata(x_test, y_test)
 test_loader = torch.utils.data.DataLoader(test_data, 10,  shuffle = False)
 #Original Mix
 x_train = np.concatenate([x_1_train,x_2_train,x_3_train,x_4_train,x_5_train, \
-                          x_6_train,x_7_train,x_8_train,x_9_train,x_10_train,x_11_train], axis = 0)
+                          x_6_train,x_7_train,x_8_train,x_9_train,x_10_train,x_11_train], axis = 0) #[xxxxx, 16000]
 # x_train = np.concatenate([x_1_train,x_2_train,x_3_train], axis = 0)
-x_train = np.expand_dims(x_train, 1)    # [xxxxxx, 1, 16000]
+x_train = np.expand_dims(x_train, 1)    # [xxxxxx, 1, 16000] 
 y_train = np.concatenate([y_1_train,y_2_train,y_3_train,y_4_train,y_5_train, \
                           y_6_train,y_7_train,y_8_train,y_9_train,y_10_train,y_11_train],axis = 0)
 # y_train = np.concatenate([y_1_train,y_2_train,y_3_train],axis = 0) # [xxxxxx, 2, 16000]

@@ -145,12 +145,12 @@ class Encoder(nn.Module):
         Returns:
             mixture_w: [M, N, K], where K = (T-L)/(L/2)+1 = 2T/L-1
         """
-        print(mixture.shape)
+        # print(mixture.shape)
         # !!!====================TODO==================== (1 line)
-        mixture = mixture.unsqueeze(1)
-        print(mixture.shape)
+        # mixture = mixture.unsqueeze(1)
+        # print(mixture.shape)
         mixture_w = F.relu(self.conv1d_U(mixture))
-        print(mixture_w.shape)
+        # print(mixture_w.shape)
         # !!!============================================
         return mixture_w
 

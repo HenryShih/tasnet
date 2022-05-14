@@ -25,6 +25,8 @@ batch_size = 10
 epochs_size = 100
 
 def compute_measures(se,s):
+    #se: estimate signal
+    #s: ground truth signal
     Rss=s.transpose().dot(s)
     this_s=s
 
@@ -35,7 +37,7 @@ def compute_measures(se,s):
     Snn=np.sum((e_res)**2)
 
     SDR=10*np.log10(Sss/Snn)
-
+    #SI-SDR
     return SDR
 class Wavedata(Dataset):
     def __init__(self,mix,vocal_music):
@@ -165,7 +167,7 @@ def validation():
     loss_append = []
     SDR_vocal_append=[]
     SDR_music_append=[]
-    for idx in range(int(len(x_test)/10)):
+    for idx in range(int(len(x_test)/batch_size)):
         x_valid, t_valid = next(dataloader_iterator)
         with torch.no_grad():
             y_estimate = model(x_valid.to(device))

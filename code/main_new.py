@@ -137,7 +137,8 @@ print(f"Model size {size}")
 # !!!============================================
 
 model.to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=6e-4)
+scheduler = ExponentialLR(optimizer, gamma=0.9)
 criterion = nn.L1Loss()
 
 ### =========continue training ==============
@@ -167,7 +168,7 @@ def validation():
     loss_append = []
     SDR_vocal_append=[]
     SDR_music_append=[]
-    for idx in range(int(len(x_test)/batch_size)):
+    for idx in range(int(len(x_test)/10)):
         x_valid, t_valid = next(dataloader_iterator)
         with torch.no_grad():
             y_estimate = model(x_valid.to(device))
@@ -244,6 +245,7 @@ for epoch in range(epochs_size):
             print ('Epoch [{}/{}], Step [{}/{}], Loss: {}' 
                       .format(epoch_now+1, epochs_size, i+1, total_step, loss.item()))
             print('Best epoch:'+ str(best_epoch)+' Vocal: '+str(best_vocal_SDR)+' Music: '+str(best_music_SDR) )
+    scheduler.step()
     #== validation =======
     stop = timeit.default_timer()
     print('Time for one epoch :'+ str(stop-start)+' seconds')

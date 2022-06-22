@@ -138,7 +138,7 @@ print(f"Model size {size}")
 
 model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=6e-4)
-scheduler = ExponentialLR(optimizer, gamma=0.9)
+scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 criterion = nn.L1Loss()
 
 ### =========continue training ==============
